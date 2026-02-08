@@ -1,35 +1,69 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>My Shopping Cart</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface Item {
+  id: number;
+  title: string;
+  price: number;
+  image: string
 }
 
-export default App
+interface CartItemProps {
+  id: number;
+  name: string;
+  price: number;
+  onRemove: (id: number) => void;
+}
+
+function CartItem({id, name, price, onRemove}: CartItemProps) {
+  return (
+    <div>
+      <span>id: {id}</span>
+      <span>{name} </span>
+      <span>${price}</span> 
+      <button onClick={() => onRemove(id)}>Remove</button>
+    </div>
+  );
+}
+
+function App() {
+  const [items, setItems] = useState<Item[]>([]);
+  const [loading, setLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    setLoading(true);
+    fetch('https://fakestoreapi.com/products')
+    .then(res => res.json())
+    .then(data => {
+      setItems(data);
+      setLoading(false)
+    })
+  }, [])
+
+  if(loading) {
+    return <div>Loading...</div>
+  }
+
+  const removeItem = (id: number) => {
+    setItems((prev) => prev.filter((i) => i.id !== id));
+  }
+  return (
+    <>
+      <h1>My Shopping Cart</h1>
+      <p>Items in Cart: {items.length}</p>
+      <div>
+        Items:{" "}
+        {items.map((item) => (
+          <CartItem 
+          key={item.id}
+          id={item.id}
+           name={item.title}
+            price={item.price}
+            onRemove={removeItem} />
+        ))}
+      </div>
+    </>
+  );
+}
+
+export default App;

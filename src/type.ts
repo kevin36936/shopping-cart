@@ -20,13 +20,22 @@ export interface ProductListProps {
 
 export interface ShoppingCartProps {
     cart: CartItem[];
-    
+    onRemove: (id: number) => void;
 }
 
 export interface ProductCardProps {
-
+    id: number;
+    title: string;
+    price: number;
+    image: string;
+    onAddToCart: (product: Item) => void;
 }
 
 export interface CartItemProps {
-
+    id: number;
+    title: string;
+    price: number;
+    image: string;
+    quantity: number
+    onRemove: (id: number) => void;
 }

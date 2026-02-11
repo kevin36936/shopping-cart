@@ -1,0 +1,25 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+  <diagram name="Page-1" id="qd_7utsRhG9ql25I7ssP">
+    <mxGraphModel dx="1540" dy="593" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QEiYm-x-Ryj8eRie0VL_-2" edge="1" parent="1" source="gX7QOwm89GGr3lf0XaGc-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" target="gX7QOwm89GGr3lf0XaGc-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QEiYm-x-Ryj8eRie0VL_-3" edge="1" parent="1" source="gX7QOwm89GGr3lf0XaGc-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" target="QEiYm-x-Ryj8eRie0VL_-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gX7QOwm89GGr3lf0XaGc-17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="App&lt;div&gt;&lt;br&gt;&lt;div&gt;State:&lt;br&gt;items: Item[]&lt;/div&gt;&lt;div&gt;loading: boolean&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Action:&lt;/div&gt;&lt;/div&gt;&lt;div&gt;removeItem(id)&lt;br&gt;fetchProducts()&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="250" x="70" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gX7QOwm89GGr3lf0XaGc-22" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="CartItem&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Props:&lt;/div&gt;&lt;div&gt;id: number&lt;/div&gt;&lt;div&gt;name: string&lt;/div&gt;&lt;div&gt;price: number&lt;/div&gt;&lt;div&gt;onRemove: function&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Events:&lt;/div&gt;&lt;div&gt;onClick -&amp;gt; calls onRemove(id)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="160" width="260" x="-150" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="QEiYm-x-Ryj8eRie0VL_-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="CartItem&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Props:&lt;/div&gt;&lt;div&gt;id: number&lt;/div&gt;&lt;div&gt;name: string&lt;/div&gt;&lt;div&gt;price: number&lt;/div&gt;&lt;div&gt;onRemove: function&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Events:&lt;/div&gt;&lt;div&gt;onClick -&amp;gt; calls onRemove(id)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="160" width="260" x="295" y="280" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

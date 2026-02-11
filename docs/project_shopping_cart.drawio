@@ -1,0 +1,37 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+  <diagram name="Page-1" id="qd_7utsRhG9ql25I7ssP">
+    <mxGraphModel dx="1540" dy="1693" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QEiYm-x-Ryj8eRie0VL_-2" edge="1" parent="1" source="gX7QOwm89GGr3lf0XaGc-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" target="gX7QOwm89GGr3lf0XaGc-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QEiYm-x-Ryj8eRie0VL_-3" edge="1" parent="1" source="gX7QOwm89GGr3lf0XaGc-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" target="QEiYm-x-Ryj8eRie0VL_-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gX7QOwm89GGr3lf0XaGc-17" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="App&lt;div&gt;&lt;br&gt;&lt;div&gt;State:&lt;br&gt;products: Item[]&lt;/div&gt;&lt;div&gt;cart: CartItem[]&lt;/div&gt;&lt;div&gt;loading: boolean&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Action:&lt;/div&gt;&lt;/div&gt;&lt;div&gt;addToCart(product: item)&lt;/div&gt;&lt;div&gt;removeItem(id: number)&lt;br&gt;fetchProducts()&lt;/div&gt;" vertex="1">
+          <mxGeometry height="180" width="250" x="70" y="-20" as="geometry" />
+        </mxCell>
+        <mxCell id="RfrwHvqscdsSpJnJ06hX-2" edge="1" parent="1" source="gX7QOwm89GGr3lf0XaGc-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="RfrwHvqscdsSpJnJ06hX-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gX7QOwm89GGr3lf0XaGc-22" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="ProductList&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Props:&lt;/div&gt;&lt;div&gt;- products&lt;/div&gt;&lt;div&gt;- onAddToCart&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Renders:&lt;/div&gt;&lt;div&gt;-Grid layout&lt;/div&gt;&lt;div&gt;- Maps arrays&lt;/div&gt;" vertex="1">
+          <mxGeometry height="160" width="260" x="-130" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="QEiYm-x-Ryj8eRie0VL_-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="ShoppingCart&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Props:&lt;/div&gt;&lt;div&gt;- cart&lt;/div&gt;&lt;div&gt;- onRemove&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Events:&lt;/div&gt;&lt;div&gt;- CartItem list&lt;/div&gt;&lt;div&gt;- Total price&lt;/div&gt;" vertex="1">
+          <mxGeometry height="140" width="260" x="260" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="RfrwHvqscdsSpJnJ06hX-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Product Card&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Props:&lt;/div&gt;&lt;div&gt;- product&lt;/div&gt;&lt;div&gt;- onAddtoCart&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Renders:&lt;/div&gt;&lt;div&gt;- Image&amp;nbsp;&lt;/div&gt;&lt;div&gt;- Title&lt;/div&gt;&lt;div&gt;- Price&lt;/div&gt;&lt;div&gt;- [Add] button&lt;/div&gt;" vertex="1">
+          <mxGeometry height="190" width="200" x="-100" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="RfrwHvqscdsSpJnJ06hX-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="CartItem&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Props:&lt;/div&gt;&lt;div&gt;- Id&lt;/div&gt;&lt;div&gt;- Title&lt;/div&gt;&lt;div&gt;- Price&lt;/div&gt;&lt;div&gt;- Image&lt;/div&gt;&lt;div&gt;- quantity&lt;/div&gt;&lt;div&gt;- onRemove&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Renders:&lt;/div&gt;&lt;div&gt;- Product info&lt;/div&gt;&lt;div&gt;- Quantity&lt;/div&gt;&lt;div&gt;- [Remove] button&lt;/div&gt;" vertex="1">
+          <mxGeometry height="210" width="200" x="300" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="RfrwHvqscdsSpJnJ06hX-4" edge="1" parent="1" source="QEiYm-x-Ryj8eRie0VL_-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.444;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="RfrwHvqscdsSpJnJ06hX-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

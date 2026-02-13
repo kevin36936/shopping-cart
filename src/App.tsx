@@ -2,19 +2,13 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import type { Item, CartItem } from "./types";
 import ProductList from "./components/ProductList"
+import ShoppingCart from "./components/ShoppingCart";
 
 function App() {
   const [products, setProducts] = useState<Item[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
-
   const [loading, setLoading] = useState<boolean>(true);
 
-  const total_in_cent = cart.reduce(
-    (sum, item) => sum + item.price * 100,
-    0,
-  );
-  const total_in_dollar = (total_in_cent / 100).toFixed(2);
-  
   useEffect(() => {
     setLoading(true);
     fetch("https://fakestoreapi.com/products")
@@ -58,6 +52,7 @@ function App() {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
        <ProductList products={products} onAddToCart={addToCart}/>
+       <ShoppingCart cart={cart} onRemove={removeFromCart }/>
     </div>
   );
 }

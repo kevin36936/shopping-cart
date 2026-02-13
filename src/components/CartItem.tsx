@@ -1,18 +1,13 @@
-interface CartItemProps {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  onRemove: (id: number) => void;
-}
+import type { CartItemProps } from "../types";
 
-function CartItem({ id, name, price, image, onRemove }: CartItemProps) {
+function CartItem({ id, title, price, image, quantity, onRemove }: CartItemProps) {
   return (
     <div>
-      <img src={image}></img>
-      <span>id: {id}</span>
-      <span>{name} </span>
-      <span>${price}</span>
+      <img src={image} alt={title} />
+      <div>{title}</div>
+      <div>
+        Price: ${price.toFixed(2)} × {quantity} = ${(price * quantity).toFixed(2)}
+      </div>
       <button onClick={() => onRemove(id)}>Remove</button>
     </div>
   );

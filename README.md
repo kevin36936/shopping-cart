@@ -1,73 +1,63 @@
-# React + TypeScript + Vite
+# Shopping Cart Project 🛒
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack e-commerce shopping cart application built as a learning project to master modern web development.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎯 Project Overview
 
-## React Compiler
+This project demonstrates a complete shopping cart implementation with:
+- Modern React architecture with TypeScript
+- Tailwind CSS for styling
+- Integration with Fake Store API
+- Plans for full backend integration (Phase 2)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Learning Focus**: Understanding React state management, TypeScript, component design, and full-stack development patterns.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Phase 1 - Frontend (✅ Completed)
+| Technology | Purpose |
+|------------|---------|
+| **React 18** | UI library with hooks |
+| **TypeScript** | Type safety and better DX |
+| **Vite** | Fast dev server and build tool |
+| **Tailwind CSS** | Utility-first styling |
+| **Fake Store API** | Mock product data |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Phase 2 - Backend (🔜 Planned)
+| Technology | Purpose |
+|------------|---------|
+| **Node.js + Express** | Backend API server |
+| **PostgreSQL** | Relational database |
+| **Passport.js** | Authentication |
+| **Stripe** | Payment processing (test mode) |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📦 Installation & Setup
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
+- **Node.js** v18 or higher
+- **npm** (comes with Node.js)
+- Git
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Quick Start
+
+```bash
+# 2. Install dependencies
+npm install
+
+# 3. Start development server
+npm run dev
+
+# 4. Open your browser
+# Visit: http://localhost:5173
+
+
+npm run dev      # Start development server with hot reload
+npm run build    # Build for production
+npm run preview  # Preview production build locally
+npm run lint     # Run ESLint for code quality

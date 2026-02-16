@@ -48,12 +48,39 @@ function App() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
-      <ProductList products={products} onAddToCart={addToCart} />
-      <ShoppingCart cart={cart} onRemove={removeFromCart} />
+    <div className="min-h-screen bg-gray-100">
+      {/* Page Container */}
+      <div className="container mx-auto p-8">
+        
+        {/* Page Title */}
+        <h1 className="text-3xl font-bold mb-8 text-gray-900">
+          Shopping Cart
+        </h1>
+        
+        {/* Main Layout: Products + Cart Side-by-Side */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          
+          {/* Left: Product List (Takes most space) */}
+          <div className="flex-1">
+            <ProductList 
+              products={products} 
+              onAddToCart={addToCart} 
+            />
+          </div>
+          
+          {/* Right: Shopping Cart (Fixed width) */}
+          <div className="lg:w-96">
+            <ShoppingCart 
+              cart={cart} 
+              onRemove={removeFromCart} 
+            />
+          </div>
+          
+        </div>
+      </div>
     </div>
   );
+  
 }
 
 export default App;

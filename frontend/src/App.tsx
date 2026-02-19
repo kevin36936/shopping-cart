@@ -11,10 +11,19 @@ function App() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
+    fetch("http://localhost:3000/api/product")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
         setProducts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("error fetching products:", err);
         setLoading(false);
       });
   }, []);

@@ -1,6 +1,8 @@
 import express from "express"
 import cors from "cors"
+import "dotenv/config"
 
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors());
@@ -19,7 +21,7 @@ app.get("/api/test", (req, res) => {
     });
 });
 
-app.get("/api/product", async (req, res) => {
+app.get("/api/products", async (req, res) => {
     try {
         const response = await fetch("https://fakestoreapi.com/products");
 
@@ -37,9 +39,6 @@ app.get("/api/product", async (req, res) => {
         res.status(500).json({error: "Internal Server Error"})
     }
 });
-
-
-const PORT = 3000;
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

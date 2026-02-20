@@ -8,24 +8,47 @@ function App() {
   const [products, setProducts] = useState<Item[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  async function fetchProduct() {
+    try {
+      const res = await fetch(`${API_URL}/api/products`);
+      if(!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`)
+      }
+      const data = await res.json();
+      return data;
+    }
+    catch (err) {
+      console.log("fetchProduct error:", err);
+      throw err;
+    }  
+  }
 
   useEffect(() => {
-    setLoading(true);
-    fetch("http://localhost:3000/api/product")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("error fetching products:", err);
-        setLoading(false);
-      });
+    let isMounted = true;
+
+    const load = async () => {
+      try{
+        setLoading(true);
+        const products = await fetchProduct();
+        if (!isMounted) return; //avoid setState after unmount
+        setProducts(products);
+      } catch (err) {
+        if(!isMounted) return;
+        setError("Failed to load products");
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    load()
+    
+    return () => {
+      isMounted = false;
+    }
+
   }, []);
 
   if (loading) {
@@ -59,6 +82,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Page Container */}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <div className="container mx-auto p-8">
         
         {/* Page Title */}

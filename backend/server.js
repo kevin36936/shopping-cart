@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import "dotenv/config"
+import pool from "./db.js"
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -37,6 +38,26 @@ app.get("/api/products", async (req, res) => {
     catch(error){
         console.log("Error fetching prodcts:", error)
         res.status(500).json({error: "Internal Server Error"})
+    }
+});
+
+app.get("/api/db-test", async(req, res) => {
+    try {
+        const client = await pool.connect();
+        const result = await client.query("SELECT NOW()");
+        client.release();
+
+        res.json({
+            success: true,
+            message: "Database connected successfully!",
+            server_time: result.rows[0].now
+        });
+    } catch(error) {
+        console.error("DB connection error:", error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
     }
 });
 

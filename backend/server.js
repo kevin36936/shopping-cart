@@ -1,7 +1,7 @@
 import express from "express"
 import cors from "cors"
 import "dotenv/config"
-import pool from "./db.js"
+import pool from "./pool.js"
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -24,20 +24,15 @@ app.get("/api/test", (req, res) => {
 
 app.get("/api/products", async (req, res) => {
     try {
-        const response = await fetch("https://fakestoreapi.com/products");
-
-        if (!response.ok){
-            return res.status(response.status).json({
-                error: `Failed to fetch products: ${response.statusText}`
-            })
-        }
-
-        const data = await response.json()
-        res.status(200).json(data);
-    }
-    catch(error){
-        console.log("Error fetching prodcts:", error)
-        res.status(500).json({error: "Internal Server Error"})
+        const result = await pool.query("select * from products");
+        const products = result.rows.map(product => ({
+            ...product,
+            price: parseFloat(product.price)
+        }));
+        res.json(products);
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({error: "Database error"});
     }
 });
 

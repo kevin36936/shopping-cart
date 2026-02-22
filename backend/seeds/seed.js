@@ -21,21 +21,6 @@ async function fetchProducts() {
     }
 }
 
-/*
-Ensures the products table exists and ensure the script idempotent
-*/
-async function ensureTable(client) {
-    await client.query(`
-        create table if not exists products(
-            id int primary key,
-            title text not null,
-            price numeric(10, 2) not null,
-            image text default 'no-image.png'
-        );
-    `);
-    console.log("Table 'products' is ready.")
-}
-
 // inserts products into the database inside a transaction.
 async function insertProducts(client, products) {
     let inserted = 0;
@@ -78,8 +63,6 @@ async function seed() {
 
     try {
         console.log("Connected to database")
-        await ensureTable(client);
-
         console.log("Fetching products from API...");
         const products = await fetchProducts();
         console.log(`Fteched ${products.length} products`);

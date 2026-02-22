@@ -79,6 +79,8 @@ function App() {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const clearCart = () => setCart([]);
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Page Container */}
@@ -105,7 +107,8 @@ function App() {
           <div className="lg:w-96">
             <ShoppingCart 
               cart={cart} 
-              onRemove={removeFromCart} 
+              onRemove={removeFromCart}
+              onClear={clearCart}
             />
           </div>
           

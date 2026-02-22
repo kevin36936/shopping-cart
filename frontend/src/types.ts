@@ -21,6 +21,7 @@ export interface ProductListProps {
 export interface ShoppingCartProps {
     cart: CartItem[];
     onRemove: (id: number) => void;
+    onClear: () => void;
 }
 
 export interface ProductCardProps {

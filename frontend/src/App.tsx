@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import type { Item, CartItem } from "./types";
 import ProductList from "./components/ProductList";
 import ShoppingCart from "./components/ShoppingCart";
+import LoginForm from "./components/LoginForm";
 
 function App() {
   const [products, setProducts] = useState<Item[]>([]);
@@ -91,6 +92,10 @@ function App() {
         <h1 className="text-3xl font-bold mb-8 text-gray-900">
           Shopping Cart
         </h1>
+
+        <div className="mb-8">
+          <LoginForm />
+        </div>
         
         {/* Main Layout: Products + Cart Side-by-Side */}
         <div className="flex flex-col lg:flex-row gap-6">

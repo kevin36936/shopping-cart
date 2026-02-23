@@ -40,3 +40,13 @@ export interface CartItemProps {
     quantity: number
     onRemove: (id: number) => void;
 }
+
+export interface LoginFormData {
+    email: string;
+    password: string;
+}
+
+export interface UserProfile {
+    id: number;
+    email: string;
+}

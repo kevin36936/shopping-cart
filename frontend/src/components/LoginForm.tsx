@@ -98,7 +98,7 @@ const LoginForm = () => {
 
             {/* Quick test hint */}
             <p className="text-xs text-gray-400">
-                Test: alice@example.com / mysecret
+                Test: Laurie_Wuckert@yahoo.com  / password123
             </p>
         </form>
     );

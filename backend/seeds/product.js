@@ -1,8 +1,6 @@
 import fetch from "node-fetch"
-import "dotenv/config"
-import pool from "../pool.js"
 
-async function fetchProducts() {
+export async function fetchProducts() {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 5000);
 
@@ -22,7 +20,7 @@ async function fetchProducts() {
 }
 
 // inserts products into the database inside a transaction.
-async function insertProducts(client, products) {
+export async function insertProducts(client, products) {
     let inserted = 0;
 
     await client.query("begin");
@@ -30,13 +28,14 @@ async function insertProducts(client, products) {
     try {
         for (const product of products) {
             if (!product.id || !product.title || product.price == null) {
-                console.warn(`Skipping invalud produuct: ${product}`)
+                console.warn(`Skipping invalid produuct: ${product}`)
                 continue;
             }
 
-            await client.query(
+            const res = await client.query(
                 `insert into products (id, title, price, image)
-                values ($1, $2, $3, $4)`,
+                values ($1, $2, $3, $4)
+                on conflict do nothing`,
                 [
                     product.id,
                     product.title,
@@ -44,7 +43,7 @@ async function insertProducts(client, products) {
                     product.image,
                 ]
             );
-            inserted++
+            if(res.rowCount>0) inserted++;
         }
 
         await client.query("commit");
@@ -57,29 +56,3 @@ async function insertProducts(client, products) {
 
     return inserted;
 }
-
-async function seed() {
-    const client = await pool.connect();
-
-    try {
-        console.log("Connected to database")
-        console.log("Fetching products from API...");
-        const products = await fetchProducts();
-        console.log(`Fteched ${products.length} products`);
-
-        await insertProducts(client, products);
-
-        console.log("seeding completed successfully.");
-    } catch (err) {
-        console.error("Seeding failed", err);
-        throw err;
-    } finally {
-        client.release();
-        await pool.end();
-    }
-}
-
-seed().catch(err => {
-    console.error("Fetal error", err);
-    process.exit(1)
-})

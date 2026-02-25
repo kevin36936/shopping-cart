@@ -15,41 +15,39 @@ function App() {
   async function fetchProduct() {
     try {
       const res = await fetch(`${API_URL}/api/products`);
-      if(!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`)
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
       }
       const data = await res.json();
       return data;
-    }
-    catch (err) {
+    } catch (err) {
       console.log("fetchProduct error:", err);
       throw err;
-    }  
+    }
   }
 
   useEffect(() => {
     let isMounted = true;
 
     const load = async () => {
-      try{
+      try {
         setLoading(true);
         const products = await fetchProduct();
         if (!isMounted) return; //avoid setState after unmount
         setProducts(products);
       } catch (err) {
-        if(!isMounted) return;
+        if (!isMounted) return;
         setError("Failed to load products");
       } finally {
         if (isMounted) setLoading(false);
       }
     };
 
-    load()
-    
+    load();
+
     return () => {
       isMounted = false;
-    }
-
+    };
   }, []);
 
   if (loading) {
@@ -83,45 +81,35 @@ function App() {
   const clearCart = () => setCart([]);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-200">
       {/* Page Container */}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <div className="container mx-auto p-8">
-        
         {/* Page Title */}
-        <h1 className="text-3xl font-bold mb-8 text-gray-900">
-          Shopping Cart
-        </h1>
+        <h1 className="text-3xl font-bold mb-8 text-gray-900">Shopping Cart</h1>
 
-        <div className="mb-8">
-          <LoginForm />
-        </div>
-        
         {/* Main Layout: Products + Cart Side-by-Side */}
         <div className="flex flex-col lg:flex-row gap-6">
-          
           {/* Left: Product List (Takes most space) */}
           <div className="flex-1">
-            <ProductList 
-              products={products} 
-              onAddToCart={addToCart} 
-            />
+            <ProductList products={products} onAddToCart={addToCart} />
           </div>
-          
+
           {/* Right: Shopping Cart (Fixed width) */}
           <div className="lg:w-96">
-            <ShoppingCart 
-              cart={cart} 
+            <div className="mb-8">
+              <LoginForm />
+            </div>
+            <ShoppingCart
+              cart={cart}
               onRemove={removeFromCart}
               onClear={clearCart}
             />
           </div>
-          
         </div>
       </div>
     </div>
   );
-  
 }
 
 export default App;

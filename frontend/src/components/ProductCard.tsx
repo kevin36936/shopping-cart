@@ -12,7 +12,7 @@ export default function ProductCard({ id, title, price, image, onAddToCart }: Pr
         onAddToCart(product);
     }
     return (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:-translate-y-1 transition-all duration-200">
             {/* Image Section */}
             <div className="relative">
                 <img

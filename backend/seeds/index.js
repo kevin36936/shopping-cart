@@ -2,6 +2,7 @@ import "dotenv/config"
 import pool from "../pool.js"
 import { fetchProducts, insertProducts } from "./product.js";
 import {insertUsers} from "./users.js"
+import {ensureUserCarts, ensureCartItems} from "./cart.js"
 
 async function seed() {
     const client = await pool.connect();
@@ -18,8 +19,16 @@ async function seed() {
         await insertProducts(client, products);
 
         // Seed Users (idempotent)
-        console.log("Seeding User...");
+        console.log("Seeding users...");
         await insertUsers(client);
+
+        // Seed Carts (idempotent)
+        console.log("Seeing carts...")
+        await ensureUserCarts(client);
+
+        // Seed CartItem (idempotent)
+        console.log("Seeding cartItems...");
+        await ensureCartItems(client);
 
         console.log("seeding completed successfully.");
     } catch (err) {

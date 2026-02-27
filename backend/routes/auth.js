@@ -2,6 +2,7 @@ import express from "express"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import pool from "../pool.js"
+import {findUserByEmail, createUser} from "../models/auth,js"
 import "dotenv/config"
 
 const router = express.Router();
@@ -23,21 +24,14 @@ router.post("/register", async (req, res) => {
     }
 
     try {
-        const existingUser = await pool.query(
-            "select id from users where email = $1",
-            [email]
-        );
+        const existingUser = await findUserByEmail(email);
 
-        if (existingUser.rows.length > 0) {
+        if (existingUser) {
             return res.status(409).json({ error: "Email already registered" });
         }
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-        const newUser = await pool.query(
-            "Insert into users (email, password_hash) values ($1, $2) returning id, email, created_at",
-            [email, hashedPassword]
-        );
+        const newUser = await createUser(email, hashedPassword);
 
         const token = jwt.sign(
             { userId: newUser.rows[0].id, email: newUser.rows[0].email },

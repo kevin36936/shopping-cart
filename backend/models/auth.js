@@ -8,6 +8,14 @@ export async function findUserByEmail(email) {
     return result.rows[0] || null;
 }
 
+export async function findUserForLogin(email) {
+    const result = await pool.query(
+        "select id, email, password_hash from users where email = $1",
+        [email]
+    );
+    return result.rows[0] || null;
+}
+
 export async function createUser(email, hashedPassword) {
     const result = await pool.query(
         `insert into users (email, password_hash) 

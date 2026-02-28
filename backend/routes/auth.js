@@ -1,8 +1,7 @@
 import express from "express"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
-import pool from "../pool.js"
-import {findUserByEmail, createUser} from "../models/auth,js"
+import {findUserByEmail, createUser, findUserForLogin} from "../models/auth.js"
 import "dotenv/config"
 
 const router = express.Router();
@@ -34,14 +33,14 @@ router.post("/register", async (req, res) => {
         const newUser = await createUser(email, hashedPassword);
 
         const token = jwt.sign(
-            { userId: newUser.rows[0].id, email: newUser.rows[0].email },
+            { userId: newUser.id, email: newUser.email },
             process.env.JWT_SECRET,
             { expiresIn: "7d" }
         );
 
         res.status(201).json({
             message: "User registered successfully",
-            user: newUser.rows[0],
+            user: newUser,
             token
         });
     }
@@ -59,15 +58,10 @@ router.post("/login", async (req, res) => {
     }
 
     try {
-        const result = await pool.query(
-            "select id, email, password_hash from users where email = $1",
-            [email]
-        );
-        if (result.rows.length === 0) {
+        const user = await findUserForLogin(email)
+        if (!user) {
             return res.status(401).json({error: "Invalid credentials"});
         }
-
-        const user = result.rows[0];
 
         const validPassword = await bcrypt.compare(password, user.password_hash)
 

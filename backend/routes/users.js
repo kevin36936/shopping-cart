@@ -18,6 +18,6 @@ router.get("/profile", authenticateToken, async (req, res) => {
         console.error("Profile error:", err);
         res.status(500).json({error: "Internal server error"});
     }
-})
+});
 
 export default router;

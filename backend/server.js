@@ -4,6 +4,7 @@ import "dotenv/config"
 import pool from "./pool.js"
 import authRoutes from "./routes/auth.js"
 import userRoutes from "./routes/users.js"
+import cartRoutes from "./routes/cart.js"
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json())
 
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
+app.use("/cart", cartRoutes);
 
 app.get("/", (req, res) => {
     res.json({message: "Shopping Cart API is running"});

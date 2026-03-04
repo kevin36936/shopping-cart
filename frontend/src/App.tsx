@@ -26,7 +26,7 @@ function App() {
     const loadProducts = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${API_URL}/api/products`);
+        const res = await axios.get(`${API_URL}/products`);
         if (isMounted) setProducts(res.data);
       } catch (err) {
         if (isMounted) setError("Failed to load products");

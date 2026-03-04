@@ -15,7 +15,7 @@ const LoginForm = ({onLoginSuccess}: LoginFormProps) => {
     setFormData(prev => ({...prev, [e.target.name]: e.target.value}))
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true);
     setError("");
@@ -25,13 +25,41 @@ const LoginForm = ({onLoginSuccess}: LoginFormProps) => {
         const {token, user} = res.data;
         localStorage.setItem("token", token);
         onLoginSuccess(token, user);
-
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Login failed")
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return  (
-    <form >
-
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md mx-auto p-6 bg-white rounded shadow">
+      <h2 className="text-2xl font-bold">Login</h2>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+      <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      value={formData.email}
+      onChange={(e) => handleChange(e)}
+      className="border rounded p-2"
+      required
+      />
+      <input
+      type="password"
+      name="password"
+      placeholder="password"
+      value={formData.password}
+      onChange={(e) => handleChange(e)}
+      className="border rounded p-2"
+      required
+      />
+      <button>
+        {isLoading ? "Logging in...": "Login"}
+      </button>
+      <p className="text-xs text-gray-400">
+        Test: Laurie_Wuckert@yahoo.com / password123
+      </p>
     </form>
   )
 };

@@ -5,13 +5,12 @@ import ProductList from "./components/ProductList";
 import ShoppingCart from "./components/ShoppingCart";
 import LoginForm from "./components/LoginForm";
 import axios from "axios";
+import {useProducts} from "./hooks/useProducts"
 
 function App() {
   const API_URL = import.meta.env.VITE_API_URL;
-  // Products state
-  const [products, setProducts] = useState<Item[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+
+  const {products, loading, error} = useProducts();
 
   // Cart state
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -21,24 +20,6 @@ function App() {
   const [user, setUser] = useState<{ id: number; email: string } | null>(null);
 
   // load products on mount
-  useEffect(() => {
-    let isMounted = true;
-    const loadProducts = async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(`${API_URL}/products`);
-        if (isMounted) setProducts(res.data);
-      } catch (err) {
-        if (isMounted) setError("Failed to load products");
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-    loadProducts();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   // --- Check for existing token on app start ---
   useEffect(() => {

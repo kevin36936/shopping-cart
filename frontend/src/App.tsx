@@ -1,25 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 // import "./App.css";
-import type { Item, CartItem } from "./types";
 import ProductList from "./components/ProductList";
 import ShoppingCart from "./components/ShoppingCart";
 import LoginForm from "./components/LoginForm";
 import axios from "axios";
 import {useProducts} from "./hooks/useProducts"
+import {useCart} from "./hooks/useCart"
 
 function App() {
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const {products, loading, error} = useProducts();
+  const logoutRef = useRef<() => void>(() => {});
 
-  // Cart state
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const {products, loading, error} = useProducts(API_URL);
+  const {cart, setCart, mergeGuestCart, addToCart, removeFromCart, clearCart} = useCart(API_URL, 
+    () => logoutRef.current());
 
   //Authentication state
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<{ id: number; email: string } | null>(null);
 
-  // load products on mount
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+    setCart([]);
+  };
 
   // --- Check for existing token on app start ---
   useEffect(() => {
@@ -46,62 +52,6 @@ function App() {
     };
   }, [API_URL]);
 
-  // --- Fetch server cart (for authenticated users) ---
-  const fetchServerCart = async (authToken: string) => {
-    try {
-      const res = await axios.get(`${API_URL}/cart/items`, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
-      setCart(res.data.items);
-    } catch (err) {
-      console.error("Failed to fetch cart", err);
-    }
-  };
-
-  // --- Merge guest cart with server cart after login ---
-  const mergeGuestCart = async (authToken: string, guestCart: CartItem[]) => {
-    if (guestCart.length === 0) {
-      await fetchServerCart(authToken);
-      return;
-    }
-
-    try {
-      const serverRes = await axios.get(`${API_URL}/cart/items`, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
-      const serverItems: CartItem[] = serverRes.data.items;
-
-      // 2. Build a map of server items for quick lookup
-      const serverMap = new Map(serverItems.map((item) => [item.id, item]));
-
-      // 3. For each guest item, decide action
-      const promises = guestCart.map(async (guestItem) => {
-        const serverItem = serverMap.get(guestItem.id);
-        if (serverItem) {
-          const newQty = serverItem.quantity + guestItem.quantity;
-          return axios.patch(
-            `${API_URL}/cart/items/${guestItem.id}`,
-            { newQuantity: newQty },
-            { headers: { Authorization: `Bearer ${authToken}` } },
-          );
-        } else {
-          return axios.post(
-            `${API_URL}/cart/items`,
-            { productId: guestItem.id, quantity: guestItem.quantity },
-            { headers: { Authorization: `Bearer ${authToken}` } },
-          );
-        }
-      });
-
-      await Promise.all(promises);
-
-      // 4. Fetch the final server cart and update state
-      await fetchServerCart(authToken);
-    } catch (err) {
-      console.error("Merge failed", err);
-    }
-  };
-
   const handleAuthenticated = (
     newToken: string,
     userData: { id: number; email: string },
@@ -109,85 +59,6 @@ function App() {
     setToken(newToken);
     setUser(userData);
     mergeGuestCart(newToken, cart);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    setUser(null);
-    setCart([]);
-  };
-
-  const addToCart = async (product: Item) => {
-    // guest
-    if (!token) {
-      setCart((prev) => {
-        const existing = prev.find((item) => item.id === product.id);
-        if (existing) {
-          return prev.map((item) =>
-            item.id === product.id
-              ? { ...item, quantity: item.quantity + 1 }
-              : item,
-          );
-        } else return [...prev, { ...product, quantity: 1 }];
-      });
-    } else {
-      // Authenticated
-      try {
-        await axios.post(
-          `${API_URL}/cart/items`,
-          { productId: product.id, quantity: 1 },
-          { headers: { Authorization: `Bearer ${token}` } },
-        );
-        await fetchServerCart(token);
-      } catch (err) {
-        if (axios.isAxiosError(err) && err.response?.status === 401) {
-          handleLogout();
-        } else {
-          console.error("Add to cart failed", err);
-        }
-      }
-    }
-  };
-
-  const removeFromCart = async (id: number) => {
-    // guest
-    if (!token) {
-      setCart((prev) => prev.filter((item) => item.id !== id));
-    } else {
-      // Authenticated
-      try {
-        await axios.delete(`${API_URL}/cart/items/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        await fetchServerCart(token);
-      } catch (err) {
-        if (axios.isAxiosError(err) && err.response?.status === 401) {
-          handleLogout();
-        } else {
-          console.error("Deleted from cart failed");
-        }
-      }
-    }
-  };
-
-  const clearCart = async () => {
-    if (!token) {
-      setCart([]);
-    } else {
-      try {
-        await axios.delete(`${API_URL}/cart/items`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        await fetchServerCart(token);
-      } catch (err) {
-        if (axios.isAxiosError(err) && err.response?.status === 401) {
-          handleLogout();
-        } else {
-          console.error("Deleted from cart failed");
-        }
-      }
-    }
   };
 
   if (loading) {
@@ -205,7 +76,7 @@ function App() {
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left: Product List */}
           <div className="flex-1">
-            <ProductList products={products} onAddToCart={addToCart} />
+            <ProductList products={products} onAddToCart={(product) => addToCart(product, token)} />
           </div>
 
           {/* Right: Login & Cart */}
@@ -230,8 +101,8 @@ function App() {
             {/* Shopping Cart */}
             <ShoppingCart
               cart={cart}
-              onRemove={removeFromCart}
-              onClear={clearCart}
+              onRemove={(id) => removeFromCart(id, token)}
+              onClear={() => clearCart(token)}
             />
           </div>
         </div>

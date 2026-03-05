@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import type { Item } from '../types';
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import type { Item } from '../types'
 
-export function useProducts() {
+export function useProducts(API_URL: string) {
   const [products, setProducts] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     let isMounted = true;

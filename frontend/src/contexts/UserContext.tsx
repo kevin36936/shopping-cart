@@ -1,0 +1,60 @@
+import React, { createContext, useEffect, useState, useMemo } from "react";
+import axios from "axios";
+import type {UserContextValue , User} from "../types/user.type"
+
+export const UserContext = createContext<UserContextValue | undefined>(
+  undefined,
+);
+
+export function UserProvider({ children }: { children: React.ReactNode }) {
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const login = (newToken: string, userData: User) => {
+    localStorage.setItem("token", newToken);
+    setToken(newToken);
+    setUser(userData);
+  }
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+  }
+
+  // --- Check for existing token on app start ---
+  useEffect(() => {
+    let isMounted = true;
+    const storedToken = localStorage.getItem("token");
+    const verifyToken = async (token: string) => {
+      try {
+        const res = await axios.get(`${API_URL}/api/profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (isMounted) {
+          const { id, email } = res.data;
+          setToken(storedToken);
+          setUser({id, email});
+        }
+      } catch {
+        localStorage.removeItem("token");
+      }
+    };
+    if (storedToken) verifyToken(storedToken);
+    return () => {
+      isMounted = false;
+    };
+  }, [API_URL]);
+
+  const value = useMemo(
+    () => ({ user, token, login, logout }),
+    [user, token]
+  );
+
+  return (
+    <UserContext.Provider value={value}>
+      {children}
+    </UserContext.Provider>
+  );
+}

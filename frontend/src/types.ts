@@ -45,11 +45,6 @@ export interface LoginFormData {
     email: string;
     password: string;
 }
-
-export interface LoginFormProps {
-    onLoginSuccess: (token: string, user: {id: number; email: string}) => void
-}
-
 export interface UserProfile {
     id: number;
     email: string;

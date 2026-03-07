@@ -1,6 +1,13 @@
-import React, { createContext, useEffect, useState, useMemo } from "react";
+import React, { createContext, useEffect, useState, useMemo, useContext } from "react";
 import axios from "axios";
-import type {UserContextValue , User} from "../types/user.type"
+import type {User} from "../types/user.types"
+
+export interface UserContextValue {
+  user: User | null;
+  token: string | null;
+  login: (newToken: string, userData: User) => void;
+  logout: () => void;
+}
 
 export const UserContext = createContext<UserContextValue | undefined>(
   undefined,
@@ -57,4 +64,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       {children}
     </UserContext.Provider>
   );
+}
+
+export function useUser() {
+  const context = useContext(UserContext);
+  if (context === undefined){
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context
 }

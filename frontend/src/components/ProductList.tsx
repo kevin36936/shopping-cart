@@ -1,5 +1,10 @@
-import type { ProductListProps } from "../types";
+import type { Item } from "../types/item.types";
 import ProductCard from "./ProductCard"
+
+interface ProductListProps {
+    products: Item[];
+    onAddToCart: (product: Item) => void;
+}
 
 export default function ProductList({products, onAddToCart}: ProductListProps) {
     return (

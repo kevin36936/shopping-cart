@@ -1,4 +1,11 @@
-import type { CartItemProps } from "../types";
+export interface CartItemProps {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+  quantity: number
+  onRemove: (id: number) => void;
+}
 
 function CartItem({
   id,

@@ -1,7 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
-import type { LoginFormData } from "../types";
 import type { User } from "../types/user.types";
+
+interface LoginFormData {
+  email: string;
+  password: string;
+}
 
 interface LoginFormProps {
   onLoginSuccess: (token: string, user: User) => void;

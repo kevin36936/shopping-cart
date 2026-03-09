@@ -1,5 +1,12 @@
-import type { ShoppingCartProps } from "../types";
-import CartItem from "./CartItem";
+import type { CartItem as CartItemType } from "../types/cart.types"
+import CartItem from "./CartItem"
+
+interface ShoppingCartProps {
+  cart: CartItemType[];
+  onRemove: (id: number) => void;
+  onClear: () => void;
+}
+
 export default function ShoppingCart({
   cart,
   onRemove,

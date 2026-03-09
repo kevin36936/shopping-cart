@@ -1,4 +1,12 @@
-import type { Item, ProductCardProps } from "../types"
+import type { Item } from "../types/item.types"
+
+interface ProductCardProps {
+    id: number;
+    title: string;
+    price: number;
+    image: string;
+    onAddToCart: (product: Item) => void;
+}
 
 export default function ProductCard({ id, title, price, image, onAddToCart }: ProductCardProps) {
 

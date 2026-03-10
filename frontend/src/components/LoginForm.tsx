@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import type { User } from "../types/user.types";
+import {useNavigate, useLocation} from "react-router-dom"
 
 interface LoginFormData {
   email: string;
@@ -19,6 +20,9 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   });
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -33,6 +37,7 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
       const res = await axios.post(`${API_URL}/api/login`, formData);
       const { token, user } = res.data;
       onLoginSuccess(token, user);
+      navigate(from, {replace: true});
     } catch (err: any) {
       setError(err.response?.data?.error || "Login failed");
     } finally {

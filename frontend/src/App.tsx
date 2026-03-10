@@ -6,6 +6,7 @@ import MainLayout from "./layouts/MainLayout";
 import CartPage from "./pages/CartPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import LoginPage from "./pages/LoginPage.tsx"
+import RegisterPage from "./pages/RegisterPage.tsx";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
               <Route index element={<HomePage />}/>
               <Route path="login" element={<LoginPage />}/>
               <Route path="cart" element={<CartPage />}/>
+              <Route path="register" element={<RegisterPage/>}/>
             </Route>
           </Routes>
         </CartProvider>

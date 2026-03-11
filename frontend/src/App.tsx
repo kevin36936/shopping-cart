@@ -7,6 +7,7 @@ import CartPage from "./pages/CartPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import LoginPage from "./pages/LoginPage.tsx"
 import RegisterPage from "./pages/RegisterPage.tsx";
+import CheckoutPage from "./pages/CheckoutPage.tsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               <Route path="login" element={<LoginPage />}/>
               <Route path="cart" element={<CartPage />}/>
               <Route path="register" element={<RegisterPage/>}/>
+              <Route path="checkout" element={<CheckoutPage/>}/>
             </Route>
           </Routes>
         </CartProvider>

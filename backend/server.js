@@ -6,6 +6,7 @@ import userRoutes from "./routes/users.js";
 import cartRoutes from "./routes/cart.js";
 import productRoute from "./routes/products.js";
 import healthRoute from "./routes/health.js";
+import paymentRoute from "./routes/payment.js";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api/payment", paymentRoute);
 app.use("/cart", cartRoutes);
 app.use("/products", productRoute);
 app.use("/health", healthRoute);

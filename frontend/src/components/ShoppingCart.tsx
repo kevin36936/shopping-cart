@@ -17,7 +17,7 @@ export default function ShoppingCart({
     0,
   );
   const totalInDollar = (totalInCent / 100).toFixed(2);
-  const handleClaer = () => {
+  const handleClear = () => {
     if (window.confirm("Are you sure you want to remove all items from your cart?")) {
         onClear()
     }
@@ -55,7 +55,7 @@ export default function ShoppingCart({
         </div>
       </div>
       <button
-        onClick={handleClaer}
+        onClick={handleClear}
         className="text-sm text-red-600 hover:text-red-800 font-medium"
       >
         Clear all

@@ -62,6 +62,12 @@ npm run dev       # http://localhost:3000
 
 ### 3. Frontend setup
 
+Create a `.env` file in `frontend/` based on `.env.example`:
+
+```
+VITE_API_URL=http://localhost:3000
+```
+
 ```bash
 cd ../frontend
 npm install

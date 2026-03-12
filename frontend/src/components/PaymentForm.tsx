@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 import { useCart } from "../contexts/CartContext";
 
 export default function PaymentForm() {
   const { token } = useUser();
-  const { clearCart } = useCart();
+  const { cart, clearCart } = useCart();
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
@@ -15,6 +15,12 @@ export default function PaymentForm() {
 
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const totalAmount = cart?.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
+  const formattedTotal = totalAmount.toFixed(2);
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -93,24 +99,32 @@ export default function PaymentForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="card-element-wrapper">
-        <CardElement
-          options={{
-            style: {
-              base: {
-                fontSize: "16px",
-                color: "#424770",
-                "::placeholder": { color: "#aab7c4" },
-              },
-            },
-          }}
-        />
-      </div>
-      {errorMessage && <div className="error">{errorMessage}</div>}
-      <button type="submit" disabled={!stripe || isProcessing}>
-        {isProcessing ? "Processing…" : "Pay now"}
-      </button>
-    </form>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-6">Complete your payment</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* CardElement container */}
+        <div className="p-4 border rounded-md bg-gray-50">
+          <CardElement options={{ style: { base: { fontSize: "16px" } } }} />
+        </div>
+        {/* Error message */}
+        {errorMessage && (
+          <div className="text-red-600 text-sm">{errorMessage}</div>
+        )}
+        {/* Pay button */}
+        <button
+          type="submit"
+          disabled={isProcessing}
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50"
+        >
+          {isProcessing ? "Processing..." : `Pay $${formattedTotal}`}
+        </button>
+      </form>
+      <Link
+        to="/cart"
+        className="text-blue-600 hover:underline block mt-4 text-center"
+      >
+        ← Return to cart
+      </Link>
+    </div>
   );
 }

@@ -41,7 +41,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (isMounted) {
-          const { id, email } = res.data;
+          const { id, email } = res.data.user;
           setToken(storedToken);
           setUser({id, email});
         }

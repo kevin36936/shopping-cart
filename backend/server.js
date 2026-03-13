@@ -4,9 +4,10 @@ import "dotenv/config";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import cartRoutes from "./routes/cart.js";
-import productRoute from "./routes/products.js";
-import healthRoute from "./routes/health.js";
-import paymentRoute from "./routes/payment.js";
+import productRoutes from "./routes/products.js";
+import healthRoutes from "./routes/health.js";
+import paymentRoutes from "./routes/payment.js";
+import orderRoutes from "./routes/orders.js"
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -16,10 +17,11 @@ app.use(express.json());
 
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
-app.use("/api", productRoute);
+app.use("/api", productRoutes);
 app.use("/api", cartRoutes);
-app.use("/api", paymentRoute);
-app.use("/health", healthRoute);
+app.use("/api", paymentRoutes);
+app.use("/api", orderRoutes)
+app.use("/health", healthRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Shopping Cart API is running" });

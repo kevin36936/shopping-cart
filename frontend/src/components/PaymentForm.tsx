@@ -63,6 +63,12 @@ export default function PaymentForm() {
       }
 
       if (paymentIntent.status === "succeeded") {
+        const orderRes = await axios.post(
+          `${API_URL}/api/orders`,
+          { paymentIntentId: paymentIntent.id },
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
+        console.log(`Order created:`, orderRes.data.orderId);
         await clearCart();
         navigate("/order-success");
       }

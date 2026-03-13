@@ -1,7 +1,7 @@
 import pool from "../pool.js";
 
-export async function findCartByUserId(userId) {
-  const result = await pool.query(
+export async function findCartByUserId(userId, client = pool) {
+  const result = await client.query(
     `
         select id, user_id, created_at from carts where user_id = $1`,
     [userId],
@@ -9,8 +9,8 @@ export async function findCartByUserId(userId) {
   return result.rows[0] || null;
 }
 
-export async function createCart(userId) {
-  const result = await pool.query(
+export async function createCart(userId, client = pool) {
+  const result = await client.query(
     `
         insert into carts (user_id) values ($1) returning id, user_id, created_at`,
     [userId],
@@ -24,9 +24,9 @@ export async function createCartIfNotExists(userId) {
   return await createCart(userId);
 }
 
-export async function insertCartItem(userId, productId, quantity) {
+export async function insertCartItem(userId, productId, quantity, client = pool) {
   const cart = await createCartIfNotExists(userId);
-  const result = await pool.query(
+  const result = await client.query(
     `
         insert into cart_items (cart_id, product_id, quantity)
         values ($1, $2, $3)
@@ -39,10 +39,10 @@ export async function insertCartItem(userId, productId, quantity) {
   return result.rows[0] || null;
 }
 
-export async function getCartItems(userId) {
+export async function getCartItems(userId, client = pool) {
   const cart = await findCartByUserId(userId);
   if (!cart) return [];
-  const result = await pool.query(
+  const result = await client.query(
     `
         select p.id as product_id, p.title, p.price, c.quantity, p.image from 
         cart_items c join products p on c.product_id = p.id
@@ -52,11 +52,11 @@ export async function getCartItems(userId) {
   return result.rows;
 }
 
-export async function updateCartItemQuantity(userId, productId, newQuantity) {
+export async function updateCartItemQuantity(userId, productId, newQuantity, client = pool) {
   const cart = await findCartByUserId(userId);
   if (!cart) return null;
 
-  const result = await pool.query(
+  const result = await client.query(
     `
         update cart_items
         set quantity = $1
@@ -69,11 +69,11 @@ export async function updateCartItemQuantity(userId, productId, newQuantity) {
   return result.rows[0];
 }
 
-export async function deleteCartItem(userId, productId) {
+export async function deleteCartItem(userId, productId, client = pool) {
   const cart = await findCartByUserId(userId);
   if (!cart) return null;
 
-  const result = await pool.query(
+  const result = await client.query(
     `
         delete from cart_items 
         where cart_id = $1 and product_id = $2
@@ -85,10 +85,10 @@ export async function deleteCartItem(userId, productId) {
   return result.rows[0];
 }
 
-export async function deleteAllFromCartItem(userId) {
+export async function deleteAllFromCartItem(userId, client = pool) {
   const cart = await findCartByUserId(userId);
   if (!cart) return null;
-  const result = await pool.query(
+  const result = await client.query(
     `
         delete from cart_items
         where cart_id = $1

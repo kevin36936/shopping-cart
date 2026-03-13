@@ -16,9 +16,9 @@ app.use(express.json());
 
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api", productRoute);
+app.use("/api", cartRoutes);
 app.use("/api", paymentRoute);
-app.use("/cart", cartRoutes);
-app.use("/products", productRoute);
 app.use("/health", healthRoute);
 
 app.get("/", (req, res) => {

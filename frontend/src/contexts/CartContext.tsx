@@ -28,7 +28,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const fetchServerCart = useCallback(async () => {
     if (!token) return;
     try {
-      const res = await axios.get(`${API_URL}/cart/items`, {
+      const res = await axios.get(`${API_URL}/api/cart/items`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCart(res.data.items);
@@ -47,7 +47,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       try {
-        const serverRes = await axios.get(`${API_URL}/cart/items`, {
+        const serverRes = await axios.get(`${API_URL}/api/cart/items`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const serverItems: CartItem[] = serverRes.data.items;
@@ -58,13 +58,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           if (serverItem) {
             const newQty = serverItem.quantity + guestItem.quantity;
             return axios.patch(
-              `${API_URL}/cart/items/${guestItem.id}`,
+              `${API_URL}/api/cart/items/${guestItem.id}`,
               { newQuantity: newQty },
               { headers: { Authorization: `Bearer ${token}` } },
             );
           } else {
             return axios.post(
-              `${API_URL}/cart/items`,
+              `${API_URL}/api/cart/items`,
               { productId: guestItem.id, quantity: guestItem.quantity },
               { headers: { Authorization: `Bearer ${token}` } },
             );
@@ -116,7 +116,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         // Authenticated
         try {
           await axios.post(
-            `${API_URL}/cart/items`,
+            `${API_URL}/api/cart/items`,
             { productId: product.id, quantity: 1 },
             { headers: { Authorization: `Bearer ${token}` } },
           );
@@ -141,7 +141,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       } else {
         // Authenticated
         try {
-          await axios.delete(`${API_URL}/cart/items/${id}`, {
+          await axios.delete(`${API_URL}/api/cart/items/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           await fetchServerCart();
@@ -163,7 +163,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setCart([]);
     } else {
       try {
-        await axios.delete(`${API_URL}/cart/items/`, {
+        await axios.delete(`${API_URL}/api/cart/items/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         await fetchServerCart();

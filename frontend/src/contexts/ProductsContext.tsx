@@ -29,7 +29,7 @@ export function ProductsProvider({ children }: { children: React.ReactNode }) {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${API_URL}/products`);
+        const res = await axios.get(`${API_URL}/api/products`);
         if (isMounted) setProducts(res.data);
       } catch (err) {
         if (isMounted) setError("Failed to load products");

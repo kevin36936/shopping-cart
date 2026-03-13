@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
-app.use("/api/payment", paymentRoute);
+app.use("/api", paymentRoute);
 app.use("/cart", cartRoutes);
 app.use("/products", productRoute);
 app.use("/health", healthRoute);

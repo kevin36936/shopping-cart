@@ -6,8 +6,17 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { user } = useUser();
+  const { user, loading } = useUser();
   const location = useLocation();
+
+  if (loading) {
+    // Show a spinner or a simple loading message
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
+  }
 
   if (!user) {
     return (

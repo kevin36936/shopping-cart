@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import CheckoutPage from "./pages/CheckoutPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
+import OrderSuccess from "./pages/OrderSuccess.tsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Route path="login" element={<LoginPage />} />
               <Route path="cart" element={<CartPage />} />
               <Route path="register" element={<RegisterPage />} />
+              <Route path="order-success" element={<OrderSuccess />} />
               <Route
                 path="checkout"
                 element={

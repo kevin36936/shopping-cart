@@ -40,8 +40,8 @@ export default function PaymentForm() {
         {},
         {
           headers: {
-            Authorization: `Bearer ${token},
-        "content-Type: "application/json`,
+            Authorization: `Bearer ${token}`,
+            "content-Type": "application/json",
           },
         },
       );
@@ -92,6 +92,7 @@ export default function PaymentForm() {
         // Handle non-Axios errors (like Stripe errors or generic ones)
         setErrorMessage(err.message);
       } else {
+        console.error("Unexpected error:", err);
         setErrorMessage("Something went wrong.");
       }
       setIsProcessing(false);

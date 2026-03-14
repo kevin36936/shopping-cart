@@ -1,5 +1,9 @@
 import { getCartItems, deleteAllFromCartItem } from "../models/cart.js";
-import { createOrder as insertOrder, addOrderItems } from "../models/order.js";
+import {
+  createOrder as insertOrder,
+  addOrderItems,
+  getOrdersWithItems,
+} from "../models/order.js";
 import pool from "../pool.js";
 
 export const createOrder = async (req, res) => {
@@ -37,5 +41,41 @@ export const createOrder = async (req, res) => {
     res.status(500).json({ error: "Order creation failed" });
   } finally {
     client.release();
+  }
+};
+
+export const getUserOrders = async (req, res) => {
+  const userId = req.user.userId;
+  try {
+    const rows = await getOrdersWithItems(userId);
+    if (!rows || rows.length === 0) {
+      return res.json([]);
+    }
+    const ordersMap = new Map();
+    for (const row of rows) {
+      const orderId = row.order_id;
+
+      if (!ordersMap.has(orderId)) {
+        ordersMap.set(orderId, {
+          id: orderId,
+          totalAmount: row.total_amount,
+          status: row.status,
+          createdAt: row.created_at,
+          items: [],
+        });
+      }
+
+      ordersMap.get(orderId).items.push({
+        productId: row.product_id,
+        quantity: row.quantity,
+        priceAtTime: row.price_at_time,
+      });
+    }
+
+    const orders = Array.from(ordersMap.values());
+    res.json({ orders });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to retrieve order history" });
   }
 };

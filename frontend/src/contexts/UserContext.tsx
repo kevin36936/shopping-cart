@@ -50,7 +50,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         });
         if (isMounted) {
           const { id, email } = res.data.user;
-          setToken(storedToken);
+          setToken(token);
           setUser({ id, email });
         }
       } catch {
@@ -64,6 +64,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       }
     };
     if (storedToken) verifyToken(storedToken);
+    else {
+      if (isMounted) setLoading(false);
+    }
     return () => {
       isMounted = false;
     };

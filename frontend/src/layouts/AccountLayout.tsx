@@ -18,6 +18,12 @@ const AccountLayout = () => {
           >
             Order History
           </Link>
+          <Link
+            to="change-password"
+            className="block px-4 py-2 rounded hover:bg-gray-200 transition"
+          >
+            Change Password
+          </Link>
         </nav>
       </aside>
 

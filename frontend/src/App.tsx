@@ -14,6 +14,7 @@ import ProfilePage from "./pages/ProfilePage";
 import OrdersPage from "./pages/OrdersPage";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import OrderSuccess from "./pages/OrderSuccess.tsx";
+import ChangePasswordPage from "./pages/ChangePasswordPage.tsx";
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
                 <Route index element={<Navigate to="profile" replace />} />
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="orders" element={<OrdersPage />} />
+                <Route path="change-password" element={<ChangePasswordPage />} />
               </Route>
             </Route>
           </Routes>

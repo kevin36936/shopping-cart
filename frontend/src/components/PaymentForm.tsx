@@ -36,7 +36,7 @@ export default function PaymentForm() {
     try {
       // create paymentIntent
       const res = await axios.post(
-        `${API_URL}/api/create-payment-intent`,
+        `${API_URL}/api/payments/create-payment-intent`,
         {},
         {
           headers: {

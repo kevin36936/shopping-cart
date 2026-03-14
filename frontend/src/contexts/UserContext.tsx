@@ -45,7 +45,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const storedToken = localStorage.getItem("token");
     const verifyToken = async (token: string) => {
       try {
-        const res = await axios.get(`${API_URL}/api/profile`, {
+        const res = await axios.get(`${API_URL}/api/users/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (isMounted) {

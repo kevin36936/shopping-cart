@@ -47,6 +47,7 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
+  const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS, 10) || 10;
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -70,7 +71,7 @@ export const register = async (req, res) => {
     if (existingUser) {
       return res.status(409).json({ error: "Email already registered" });
     }
-    const saltRounds = 10;
+
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const newUser = await createUser(email, hashedPassword);
 

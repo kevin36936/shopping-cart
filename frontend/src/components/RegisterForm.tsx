@@ -46,7 +46,7 @@ const RegisterForm = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${API_URL}/api/register`, formData);
+      const res = await axios.post(`${API_URL}/api/auth/register`, formData);
 
       const { token, user } = res.data;
       login(token, user);

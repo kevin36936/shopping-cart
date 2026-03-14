@@ -34,7 +34,7 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
     setError("");
 
     try {
-      const res = await axios.post(`${API_URL}/api/login`, formData);
+      const res = await axios.post(`${API_URL}/api/auth/login`, formData);
       const { token, user } = res.data;
       onLoginSuccess(token, user);
       navigate(from, {replace: true});

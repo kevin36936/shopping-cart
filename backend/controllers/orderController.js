@@ -15,7 +15,6 @@ export const createOrder = async (req, res) => {
     const items = await getCartItems(userId, client);
     if (items.length == 0) {
       await client.query("ROLLBACK");
-      client.release();
       return res.status(400).json({ error: "cart is empty" });
     }
 

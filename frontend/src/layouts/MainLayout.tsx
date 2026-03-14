@@ -9,9 +9,9 @@ export default function MainLayout() {
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const handleLogout = () => {
     if (window.confirm("Are you sure you want logout?")) {
-        logout();
+      logout();
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-200">
@@ -19,6 +19,9 @@ export default function MainLayout() {
       <header className="bg-white shadow p-4 flex justify-between items-center">
         <Link to="/">
           <h1 className="text-2xl font-bold">🛍 Shopping Cart</h1>
+        </Link>
+        <Link to="/account/profile" className="...">
+          My Account
         </Link>
 
         <div className="flex items-center gap-4">
@@ -49,7 +52,6 @@ export default function MainLayout() {
               </span>
             )}
           </Link>
-          
         </div>
       </header>
 

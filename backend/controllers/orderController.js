@@ -67,6 +67,7 @@ export const getUserOrders = async (req, res) => {
 
       ordersMap.get(orderId).items.push({
         productId: row.product_id,
+        productName: row.product_name,
         quantity: row.quantity,
         priceAtTime: row.price_at_time,
       });

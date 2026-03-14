@@ -41,10 +41,12 @@ export async function getOrdersWithItems(userID, client = pool) {
     o.status,
     o.created_at,
     oi.product_id,
+    p.title as product_name,
     oi.quantity,
     oi.price_at_time
-    from orders o join order_items oi
-    on o.id = oi.order_id
+    from orders o 
+    join order_items oi on o.id = oi.order_id
+    join products p on oi.product_id = p.id
     where o.user_id = $1
     order by o.created_at desc`,
     [userID],

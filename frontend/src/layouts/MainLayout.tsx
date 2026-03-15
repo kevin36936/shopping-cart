@@ -1,6 +1,7 @@
 import { Outlet, Link } from "react-router-dom";
 import { useUser } from "../contexts/UserContext";
 import { useCart } from "../contexts/CartContext";
+import { ShoppingCart, User } from "lucide-react";
 
 export default function MainLayout() {
   const { user, logout } = useUser();
@@ -8,55 +9,63 @@ export default function MainLayout() {
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const handleLogout = () => {
-    if (window.confirm("Are you sure you want logout?")) {
-      logout();
-    }
+    if (window.confirm("Are you sure you want logout?")) logout();
   };
 
   return (
-    <div className="min-h-screen bg-gray-200">
-      {/* Header */}
-      <header className="bg-white shadow p-4 flex justify-between items-center">
-        <Link to="/">
-          <h1 className="text-2xl font-bold">🛍 Shopping Cart</h1>
-        </Link>
-        <Link to="/account/profile" className="...">
-          My Account
-        </Link>
-
-        <div className="flex items-center gap-4">
-          {user ? (
-            <div className="flex items-center gap-3">
-              <span className="text-gray-700">Hello, {user.email}</span>
-              <button
-                onClick={handleLogout}
-                className="px-3 py-1 text-sm text-red-600 border border-red-300 rounded hover:bg-red-50 transition"
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <Link
-              to="/login"
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition"
-            >
-              Login
-            </Link>
-          )}
-
-          <Link to="/cart" className="relative inline-flex items-center">
-            <span className="text-gray-700">Cart</span>
-            {totalItems > 0 && (
-              <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5">
-                {totalItems}
-              </span>
-            )}
+    <div className="min-h-screen bg-slate-100">
+      {/* Navbar — dark */}
+      <header className="sticky top-0 z-50 bg-gray-900 shadow-lg">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link
+            to="/"
+            className="flex items-center gap-2 font-bold text-xl text-white hover:text-blue-400 transition-colors"
+          >
+            🛍 ShopCart
           </Link>
+
+          <div className="flex items-center gap-5">
+            {user ? (
+              <>
+                <Link
+                  to="/account/profile"
+                  className="flex items-center gap-1.5 text-sm text-gray-300 hover:text-white transition-colors"
+                >
+                  <User size={16} />
+                  <span className="hidden sm:inline">{user.email}</span>
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="text-sm text-red-400 hover:text-red-300 transition-colors"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="text-sm font-medium text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors"
+              >
+                Login
+              </Link>
+            )}
+
+            <Link
+              to="/cart"
+              className="relative p-2 text-gray-300 hover:text-white transition-colors"
+            >
+              <ShoppingCart size={22} />
+              {totalItems > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-blue-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+          </div>
         </div>
       </header>
 
-      {/* Page Content */}
-      <main className="container mx-auto p-8">
+      <main className="max-w-6xl mx-auto px-6 py-10">
         <Outlet />
       </main>
     </div>

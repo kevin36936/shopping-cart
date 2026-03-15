@@ -24,17 +24,14 @@ export default function PaymentForm() {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!stripe || !elements) {
       setErrorMessage("Payment system is not ready. Please try again.");
       return;
     }
-
     setIsProcessing(true);
     setErrorMessage("");
 
     try {
-      // create paymentIntent
       const res = await axios.post(
         `${API_URL}/api/payments/create-payment-intent`,
         {},
@@ -47,20 +44,14 @@ export default function PaymentForm() {
       );
 
       const cardElement = elements.getElement(CardElement);
-      if (!cardElement) {
-        throw new Error("Card element not found");
-      }
+      if (!cardElement) throw new Error("Card element not found");
 
       const { error: confirmError, paymentIntent } =
         await stripe.confirmCardPayment(res.data.clientSecret, {
-          payment_method: {
-            card: cardElement!,
-          },
+          payment_method: { card: cardElement },
         });
 
-      if (confirmError) {
-        throw confirmError;
-      }
+      if (confirmError) throw confirmError;
 
       if (paymentIntent.status === "succeeded") {
         const orderRes = await axios.post(
@@ -74,31 +65,19 @@ export default function PaymentForm() {
       }
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        // Handle Axios errors
-        if (err.response) {
-          // Server responded with a status code
-          const status = err.response.status;
-          if (status >= 500) {
-            setErrorMessage("Server error. Please try again later.");
-          } else if (status === 401) {
-            setErrorMessage("Your session has expired. Please log in again.");
-          } else if (status === 400) {
-            setErrorMessage(err.response.data?.error || "Invalid request.");
-          } else {
-            setErrorMessage("Payment failed. Please try again.");
-          }
-        } else if (err.request) {
-          // Request was made but no response received (network error)
+        const status = err.response?.status;
+        if (status && status >= 500)
+          setErrorMessage("Server error. Please try again later.");
+        else if (status === 401)
+          setErrorMessage("Your session has expired. Please log in again.");
+        else if (status === 400)
+          setErrorMessage(err.response?.data?.error || "Invalid request.");
+        else if (err.request)
           setErrorMessage("Network error. Please check your connection.");
-        } else {
-          // Something else happened while setting up the request
-          setErrorMessage("An unexpected error occurred.");
-        }
+        else setErrorMessage("Payment failed. Please try again.");
       } else if (err instanceof Error) {
-        // Handle non-Axios errors (like Stripe errors or generic ones)
         setErrorMessage(err.message);
       } else {
-        console.error("Unexpected error:", err);
         setErrorMessage("Something went wrong.");
       }
       setIsProcessing(false);
@@ -106,29 +85,41 @@ export default function PaymentForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Complete your payment</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* CardElement container */}
-        <div className="p-4 border rounded-md bg-gray-50">
-          <CardElement options={{ style: { base: { fontSize: "16px" } } }} />
+    <div className="max-w-md mx-auto space-y-6">
+      <h2 className="text-2xl font-bold text-gray-900">
+        Complete your payment
+      </h2>
+
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 space-y-4"
+      >
+        <div className="p-4 border border-gray-200 rounded-xl bg-gray-50">
+          <CardElement
+            options={{
+              style: { base: { fontSize: "16px", color: "#1f2937" } },
+            }}
+          />
         </div>
-        {/* Error message */}
+
         {errorMessage && (
-          <div className="text-red-600 text-sm">{errorMessage}</div>
+          <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-xl">
+            {errorMessage}
+          </p>
         )}
-        {/* Pay button */}
+
         <button
           type="submit"
           disabled={isProcessing}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50"
+          className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium py-2.5 rounded-xl transition-colors"
         >
           {isProcessing ? "Processing..." : `Pay $${formattedTotal}`}
         </button>
       </form>
+
       <Link
         to="/cart"
-        className="text-blue-600 hover:underline block mt-4 text-center"
+        className="text-sm text-blue-600 hover:underline flex items-center gap-1"
       >
         ← Return to cart
       </Link>

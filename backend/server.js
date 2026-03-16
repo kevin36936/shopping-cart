@@ -25,7 +25,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors());
+// Enable CORS ONLY in development
+if (process.env.NODE_ENV !== "production") {
+  app.use(cors());
+}
+
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);

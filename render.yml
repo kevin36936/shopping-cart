@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: shopping-cart-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: STRIPE_SECRET_KEY
+        sync: false # Will set manually
+      - key: CLIENT_URL
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: shopping-cart-db
+          property: connectionString
+
+  - type: postgres
+    name: shopping-cart-db
+    databaseName: shopping_cart
+    plan: free

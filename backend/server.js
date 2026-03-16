@@ -8,16 +8,24 @@ import cartRoutes from "./routes/cart.js";
 import productRoutes from "./routes/products.js";
 import healthRoutes from "./routes/health.js";
 import paymentRoutes from "./routes/payment.js";
-import orderRoutes from "./routes/orders.js"
-import { fileURLToPath } from 'url';
+import orderRoutes from "./routes/orders.js";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3000;
 const app = express();
+app.use((req, res, next) => {
+  console.log(`➡️  ${req.method} ${req.url}`);
+  next();
+});
+app.use(express.static(path.join(__dirname, "public")));
+app.use((req, res, next) => {
+  console.log(`   ⏩ after static: ${req.method} ${req.url}`);
+  next();
+});
 
 app.use(cors());
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
@@ -25,7 +33,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/payments", paymentRoutes);
-app.use("/api/orders", orderRoutes)
+app.use("/api/orders", orderRoutes);
 app.use("/health", healthRoutes);
 
 app.get("/", (req, res) => {
@@ -40,8 +48,9 @@ app.get("/api/test", (req, res) => {
   });
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+app.get("/*splat", (req, res) => {
+  console.log(`   ❌ catch-all: ${req.method} ${req.url}`);
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(PORT, () => {

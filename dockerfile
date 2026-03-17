@@ -5,6 +5,7 @@ COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ ./
 ENV VITE_API_URL="" 
+RUN echo "VITE_API_URL is set to: ${VITE_API_URL}"
 RUN npm run build
 
 # Stage 2: Build the backend runtime image

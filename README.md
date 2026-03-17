@@ -74,7 +74,7 @@ Migrations and seeding run automatically on startup via `start.sh`
 - [x] Docker setup for local development
 - [ ] Cloud deployment
 
-Development Notes
+## Development Notes
 This is my first full-stack project, built while learning React, TypeScript, Node.js, and PostgreSQL from scratch.
 
 I used AI tools heavily throughout — for explaining concepts, generating boilerplate, suggesting patterns, and debugging. Some parts (especially styling) were adapted directly from AI suggestions without deep modification.

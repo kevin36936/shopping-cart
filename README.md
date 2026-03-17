@@ -1,96 +1,82 @@
-# 🛒 Shopping Cart
+# 🛒 ShopCart
 
-A full-stack e-commerce shopping cart application — my first personal project, built while learning React, TypeScript, Node.js, and PostgreSQL.
+A full-stack e-commerce application — my first personal project, built while learning React, TypeScript, Node.js, and PostgreSQL.
+
+![ShopCart Homepage](./docs/screenshot.png)
 
 ## Features
 
-- Product listing powered by [Fake Store API](https://fakestoreapi.com)
+- Product listing with category filter and search
 - Shopping cart with add / remove / quantity update
 - Guest cart — no login required to browse and add items
 - User registration and login with JWT authentication
 - Cart merges automatically when a guest user logs in
 - Cart persists across sessions for logged-in users
+- Stripe payment integration (test mode)
+- Order history and account management
+- Change password from account settings
 
 ## Tech Stack
 
-| Layer    | Technology                                 |
-|----------|--------------------------------------------|
-| Frontend | React, TypeScript, Tailwind CSS, shadcn/ui |
-| Routing  | React Router v6                            |
-| Backend  | Node.js, Express                           |
-| Database | PostgreSQL                                 |
-| Auth     | JWT (jsonwebtoken + bcryptjs)              |
+| Layer     | Technology                                          |
+|-----------|-----------------------------------------------------|
+| Frontend  | React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui |
+| Routing   | React Router v6                                     |
+| HTTP      | axios                                               |
+| Backend   | Node.js (ES Modules), Express                       |
+| Database  | PostgreSQL 15 via `pg`                              |
+| Auth      | JWT (`jsonwebtoken` + `bcryptjs`)                   |
+| Payments  | Stripe (test mode)                                  |
+| Container | Docker + Docker Compose                             |
 
-## Prerequisites
+## Running with Docker (Recommended)
 
-- Node.js v18+ (with npm)
-- PostgreSQL v14 or later installed and running
+### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
 
-## Getting Started
+### Steps
 
-### 1. Clone the repository
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/kevin36936/shopping-cart.git
+   cd shopping-cart
 
-```bash
-git clone https://github.com/kevin36936/shopping-cart.git
-cd shopping-cart
-```
+2. Create a .env file at the project root based on .env.example:
 
-### 2. Backend setup
-
-```bash
-cd backend
-npm install
-```
-
-Create a `.env` file in `backend/` based on `.env.example`:
-
-```
-PORT=3000
-DB_USER=your_db_username
-DB_HOST=localhost
-DB_NAME=shopping-cart
-DB_PASSWORD=your_db_password
+text
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_NAME=shopping_cart
 DB_PORT=5432
+DB_HOST=db
 JWT_SECRET=your_long_random_secret
-```
+STRIPE_SECRET_KEY=sk_test_...
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
+BCRYPT_SALT_ROUNDS=10
+PORT=3000
 
-```bash
-npm run migrate   # creates tables (skips already-applied migrations)
-npm run seed      # seeds products, users, carts, and cart items
-npm run dev       # http://localhost:3000
-```
+3. Build and start all services:
+docker-compose up --build
 
-### 3. Frontend setup
+4. Open [http://localhost:3000](http://localhost:3000)
 
-Create a `.env` file in `frontend/` based on `.env.example`:
-
-```
-VITE_API_URL=http://localhost:3000
-```
-
-```bash
-cd ../frontend
-npm install
-npm run dev       # http://localhost:5173
-```
+Migrations and seeding run automatically on startup via `start.sh`
 
 ## Project Status
 
-- [x] Product listing
+- [x] Product listing with filter and search
 - [x] Shopping cart (guest + authenticated)
 - [x] JWT authentication (register / login)
 - [x] Cart persistence and guest merge on login
-- [ ] Stripe payment integration (coming soon)
+- [x] Stripe payment integration (test mode)
+- [x] Order history
+- [x] Account management (profile, change password)
+- [x] Docker setup for local development
+- [ ] Cloud deployment
 
-## 🤖 Development Notes
+Development Notes
+This is my first full-stack project, built while learning React, TypeScript, Node.js, and PostgreSQL from scratch.
 
-This is my first full-stack project, built while learning React, TypeScript,
-Node.js, and PostgreSQL from scratch.
+I used AI tools heavily throughout — for explaining concepts, generating boilerplate, suggesting patterns, and debugging. Some parts (especially styling) were adapted directly from AI suggestions without deep modification.
 
-I used AI tools heavily throughout — for explaining concepts, generating boilerplate,
-suggesting patterns, and debugging. Some parts (especially styling) were adapted
-directly from AI suggestions without deep modification.
-
-That said, I made all architectural decisions, integrated every piece together,
-and learned significantly from the process. I believe in being transparent about
-AI usage rather than pretending otherwise.
+That said, I made all architectural decisions, integrated every piece together, and learned significantly from the process. I believe in being transparent about AI usage rather than pretending otherwise

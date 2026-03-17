@@ -1,45 +1,46 @@
-import {faker} from "@faker-js/faker"
-import bcrpyt from "bcryptjs"
-
-faker.seed(123);
+import bcrypt from "bcryptjs";
 
 async function hashPassword(plainPassword) {
     const saltRounds = 10;
-    return await bcrpyt.hash(plainPassword, saltRounds);
-}
-
-function generateFakeUsers(count = 5) {
-    const users = [];
-    for (let i=0; i<count; i++){
-        users.push({
-            email: faker.internet.email(),
-            plainPassword: "password123", // same password for all fake users
-        });
-    }
-    return users;
+    return await bcrypt.hash(plainPassword, saltRounds);
 }
 
 export async function insertUsers(client) {
-        const users = generateFakeUsers(5);
-        let inserted = 0;
+    // Dynamically import faker only when this function is called
+    const { faker } = await import('@faker-js/faker');
+    faker.seed(123);
 
-        await client.query("Begin");
-        try {
-            for (const user of users) {
-                const passwordHash = await hashPassword(user.plainPassword);
-                const res = await client.query(
-                    `insert into users (email, password_hash)
-                    values ($1, $2)
-                    on conflict (email) do nothing`,
-                    [user.email, passwordHash]
-                );
-                if(res.rowCount>0) inserted++;
-            }
-            await client.query("commit");
-            console.log(`Inserted ${inserted} new users`);
-        } catch (err) {
-            await client.query("rollback");
-            console.error("User insertion failed, rolled back");
-            throw err;
+    function generateFakeUsers(count = 5) {
+        const users = [];
+        for (let i = 0; i < count; i++) {
+            users.push({
+                email: faker.internet.email(),
+                plainPassword: "password123",
+            });
         }
+        return users;
+    }
+
+    const users = generateFakeUsers(5);
+    let inserted = 0;
+
+    await client.query("BEGIN");
+    try {
+        for (const user of users) {
+            const passwordHash = await hashPassword(user.plainPassword);
+            const res = await client.query(
+                `INSERT INTO users (email, password_hash)
+                 VALUES ($1, $2)
+                 ON CONFLICT (email) DO NOTHING`,
+                [user.email, passwordHash]
+            );
+            if (res.rowCount > 0) inserted++;
+        }
+        await client.query("COMMIT");
+        console.log(`Inserted ${inserted} new users`);
+    } catch (err) {
+        await client.query("ROLLBACK");
+        console.error("User insertion failed, rolled back");
+        throw err;
+    }
 }

@@ -1,4 +1,4 @@
-#!/bin/sh
+﻿#!/bin/sh
 echo "Waiting for DB..."
 while ! pg_isready -h ${DB_HOST} -p ${DB_PORT} -U ${DB_USER} -d ${DB_NAME}; do
   sleep 1

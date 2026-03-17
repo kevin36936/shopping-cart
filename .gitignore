@@ -1,11 +1,28 @@
-# Environment variables
+# === Environment files ===
+# Ignore all .env files anywhere (local development, production, etc.)
 .env
-frontend/.env*
+.env.*
+!.env.example
+
+# Specific overrides for clarity (optional, already covered by .env.*)
 backend/.env
 backend/.env.production
+frontend/.env
+frontend/.env.production
 
-# Logs
-logs
+# === Dependencies ===
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# === Build outputs ===
+dist/
+dist-ssr/
+frontend/dist/
+backend/public/   # if you ever generate public inside backend
+
+# === Logs ===
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -13,20 +30,21 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist-ssr
-*.local
+# === OS generated files ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Editor directories and files
+# === Editor directories and files ===
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-# add this line
-cookies.txt

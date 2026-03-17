@@ -1,6 +1,9 @@
 #!/bin/sh
 echo "Waiting for DB..."
-sleep 10  # Simple wait (DB needs time)
+while ! pg_isready -h db -U ${DB_USER} -d ${DB_NAME} > /dev/null 2>&1; do
+  sleep 1
+done
+echo "DB is ready"
 
 echo "Running migrate..."
 npm run migrate

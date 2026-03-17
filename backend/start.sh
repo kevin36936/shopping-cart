@@ -1,6 +1,6 @@
 #!/bin/sh
 echo "Waiting for DB..."
-while ! pg_isready -h db -U ${DB_USER} -d ${DB_NAME} > /dev/null 2>&1; do
+while ! pg_isready -h ${DB_HOST} -p ${DB_PORT} -U ${DB_USER} -d ${DB_NAME}; do
   sleep 1
 done
 echo "DB is ready"
